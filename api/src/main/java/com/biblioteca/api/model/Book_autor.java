@@ -1,22 +1,25 @@
 package com.biblioteca.api.model;
 
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Table(name = "book_autores") 
+@Getter 
+@NoArgsConstructor
+@AllArgsConstructor
 public class Book_autor {
-    private Long id_book;    
-    private Long id_autor;
-    
-    public Long getId_autor() {
-        return id_autor;
-    }
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "id_book")
+    private Book id_book;    
 
-    public void setId_autor(Long id_autor) {
-        this.id_autor = id_autor;
-    }
-
-    public Long getId_book() {
-        return id_book;
-    }
-
-    public void setId_book(Long id_book) {
-        this.id_book = id_book;
-    }
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "id_autor")
+    private Autor id_autor;
 }

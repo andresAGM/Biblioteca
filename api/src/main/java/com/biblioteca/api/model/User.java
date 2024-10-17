@@ -1,13 +1,53 @@
 package com.biblioteca.api.model;
 
+import java.util.List;
+
+import com.biblioteca.api.DTO.user.DatosActualizarUser;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Table(name = "users")
+@Entity(name = "User")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
-  private long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Integer id;
+  @Column(name="nombre")
   private String nombre;
+  @Column(name="email", unique = true)
   private String email;
+  @Column(name="password")
   private String password;
-  private String rol; // admin o user
 
-  public User(long id, String nombre, String email, String password, String rol) {
+  // relacion usuario - rol
+  @ManyToOne // Un usuario puede tener un rol
+  @JoinColumn(name = "rol_id") // columna de la db relacionada
+  @JsonIgnore
+  private Rol rol; // admin o user 
+
+  // relacion usuario - comentarios
+  @OneToMany(mappedBy = "user_id")
+  @JsonIgnore
+  private List<Comment> comentarios;
+
+  public User(Integer id, String nombre, String email, String password, Rol rol){
     this.id = id;
     this.nombre = nombre;
     this.email = email;
@@ -15,44 +55,18 @@ public class User {
     this.rol = rol;
   }
 
-  // Getters y Setters
-  public long getId() {
-    return id;
-  }
-
-  public void setId(long id) {
-    this.id = id;
-  }
-
-  public String getNombre() {
-    return nombre;
-  }
-
-  public void setNombre(String nombre) {
-    this.nombre = nombre;
-  }
-
-  public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
-  }
-
-  public String getRol() {
-    return rol;
-  }
-
-  public void setRol(String rol) {
-    this.rol = rol;
+  public void actualizarUsuario(DatosActualizarUser datos){
+    if (datos.nombre() != null) {
+      this.nombre = datos.nombre();
+    }
+    if (datos.email() != null) {
+      this.email = datos.email();
+    }
+    if (datos.password() != null) {
+      this.password = datos.password();
+    }
+    if (datos.rolId() != null) {
+      this.rol.setId(datos.rolId());
+    }
   }
 }

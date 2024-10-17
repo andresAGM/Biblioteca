@@ -1,31 +1,31 @@
 package com.biblioteca.api.model;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-
-@Table(name = "palabras_clave") 
-@Entity(name = "Palabra_clave")
+@Table(name = "roles")
+@Entity(name = "Rol")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Palabra_clave {
+public class Rol {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String palabra; 
+    private String nombre; 
 
-    // relacion con book
-    @ManyToMany(mappedBy = "palabras_clave")
-    private Set<Book> books = new HashSet<>();
+    // relacion con usuarios
+    @OneToMany(mappedBy = "rol") // un rol puede ser asignado a muchos usuarios
+    private Set<User> users;
 }

@@ -13,19 +13,18 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-
-@Table(name = "palabras_clave") 
-@Entity(name = "Palabra_clave")
+@Table(name = "autores")
+@Entity(name = "Autor")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Palabra_clave {
-    @Id
+public class Autor {
+     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String palabra; 
+    private String nombre;
 
-    // relacion con book
-    @ManyToMany(mappedBy = "palabras_clave")
+    // relacion muchos a muchos con libros
+    @ManyToMany(mappedBy = "autores")
     private Set<Book> books = new HashSet<>();
 }
